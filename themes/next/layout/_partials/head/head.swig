@@ -74,7 +74,7 @@
 
 {% include "./external-fonts.swig" %}
 
-{% set font_awesome_uri = url_for(theme.vendors._internal + '/font-awesome/css/font-awesome.min.css') %}
+{% set font_awesome_uri = url_for('https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css') %}
 {% if theme.vendors.fontawesome %}
   {% set font_awesome_uri = theme.vendors.fontawesome %}
 {% endif %}
