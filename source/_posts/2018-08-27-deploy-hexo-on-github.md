@@ -1,6 +1,7 @@
 ---
 title: 原创 | 更快更好的使用 Hexo 写个人博客
 date: 2018-08-25 20:37:39
+updated: 2018-08-27 21:49:05
 categories: 技术
 tags:
   - Hexo
