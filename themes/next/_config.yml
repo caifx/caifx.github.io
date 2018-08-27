@@ -479,7 +479,7 @@ pangu: false
 #swiftype_key:
 
 # Baidu Analytics ID
-baidu_analytics: 8dcee341a700e92cfe80fd34a8ebc144
+#baidu_analytics: 8dcee341a700e92cfe80fd34a8ebc144
 
 # Disqus
 disqus:
@@ -534,8 +534,8 @@ gitment:
 # Available value:
 #    button | slide
 # Warning: Baidu Share does not support https.
-baidushare:
-  type: slide
+#baidushare:
+#  type: slide
 
 # addthis Share, see: https://www.addthis.com/
 #add_this_id:
