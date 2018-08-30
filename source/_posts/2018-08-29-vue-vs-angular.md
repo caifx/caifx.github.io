@@ -124,13 +124,100 @@ var app = new Vue({
 - 生命周期钩子(**与 Angular 不是一一对应的关系**)
 
 
-  | Angular               | Vue           |
-  | --------------------- | ------------- |
-  | ngOnChanges           | beforeCreate  |
-  | ngOnInit              | created       |
-  | ngDoCheck             | beforeMount   |
-  | ngAfterContentInit    | mounted       |
-  | ngAfterContentChecked | beforeUpdate  |
-  | ngAfterViewInit       | updated       |
-  | ngAfterViewChecked    | beforeDestroy |
-  | ngOnDestroy           | destroyed     |
+| Angular               | Vue           |
+| --------------------- | ------------- |
+| ngOnChanges           | beforeCreate  |
+| ngOnInit              | created       |
+| ngDoCheck             | beforeMount   |
+| ngAfterContentInit    | mounted       |
+| ngAfterContentChecked | beforeUpdate  |
+| ngAfterViewInit       | updated       |
+| ngAfterViewChecked    | beforeDestroy |
+| ngOnDestroy           | destroyed     |
+
+## 模板语法
+
+- `v-html` 指令解析原始 HTML: 比如在使用富文本编辑器的时候, 就需要把它生成的原始 HTML 渲染出来. 
+
+  ```
+  <div v-html="rawHTML" id="app"></div>
+  
+  var app = new Vue({
+    el: '#app',
+    data: {
+      rawHTML: `<p style="color: red;">这里是原始 HTML 渲染的内容</p>`
+    }
+  })
+  ```
+
+  <p style="color: red;">这里是原始 HTML 渲染的内容</p>
+
+  - 而在 Angular 中, 则需要通过 `bypassSecurityTrustHtml()` 处理
+
+    ```typescript
+    constructor(private sanitizer: DomSanitizer) {
+      this.trustedHtml = sanitizer.bypassSecurityTrustHtml(this.dangerousHtml); }
+    ```
+
+- 修饰符: 用于指出一个指令应该以特殊方式绑定
+
+## 计算属性和侦听器
+
+- 计算属性: 相当于 Angular 或其他语言里的 getter 函数(当然, 也可以给计算属性增加 setter 函数), 只不过, 计算属性多了一个特性: **缓存**. 当通过某些值(又叫依赖变量)求的计算属性的结果时, 除非依赖变量发生改变, 否则计算属性不重新计算, 即不再一次调用其 getter 函数
+
+  ```JavaScript
+  <div id="app">
+      我的名字叫 <input v-model="name"> ,
+      <p>机器人: {{ sayHello }}</p>  // 每当 name 改变时, sayHello 也会相应改变
+  </div>
+  
+  var app = new Vue({
+    el: '#app',
+    data: {
+      name: 'mike'
+    },
+    computed: {
+      sayHello: function() {
+        return 'hello, ' + this.name
+      }
+    }
+  })
+  
+  // 同时设置 getter 和 setter
+  var app = new Vue({
+    el: '#app',
+    data: {
+      name: 'mike'
+    },
+    computed: {
+      sayHello: {
+        get: function() {
+          return 'hello, ' + this.name
+        },
+        set: function(value) {
+          this.name = value
+        }
+      }
+    }
+  })
+  ```
+
+- 侦听器: 相当于给变量绑定一个 onChange 事件, 一旦变量发生改变, 则执行某个动作
+
+  ```javascript
+  var app = new Vue({
+    el: '#app',
+    data: {
+      name: 'mike',
+      newName: ''
+    },
+    watch: {
+      // 参数: 改变值, 原有值
+      name: function(newName, oldName) {
+        alert('我原来叫' + oldName + ', 现在叫' + newName)
+      }
+    }
+  })
+  ```
+
+  
