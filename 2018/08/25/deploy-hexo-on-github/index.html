@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="预计阅读时间为：8 分钟  前言欢迎访问 Caifx 的个人博客。本文将介绍如何通过 Hexo，Github Page 和 Travis CI 来提升你的写作体验，让你更快更好的使用 Hexo，专注于写作过程">
+<meta name="keywords" content="Hexo,Github Page,Travis CI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原创 | 更快更好的使用 Hexo 写个人博客">
+<meta property="og:url" content="https://caifx.github.io/2018/08/25/deploy-hexo-on-github/index.html">
+<meta property="og:site_name" content="Caifx Blog">
+<meta property="og:description" content="预计阅读时间为：8 分钟  前言欢迎访问 Caifx 的个人博客。本文将介绍如何通过 Hexo，Github Page 和 Travis CI 来提升你的写作体验，让你更快更好的使用 Hexo，专注于写作过程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/27/PqBb5j.png">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/27/PqWMo6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/27/PqWKdx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/27/PqWZQJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/27/Pqf96H.png">
+<meta property="og:updated_time" content="2018-08-27T21:49:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原创 | 更快更好的使用 Hexo 写个人博客">
+<meta name="twitter:description" content="预计阅读时间为：8 分钟  前言欢迎访问 Caifx 的个人博客。本文将介绍如何通过 Hexo，Github Page 和 Travis CI 来提升你的写作体验，让你更快更好的使用 Hexo，专注于写作过程">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/08/27/PqBb5j.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://caifx.github.io/2018/08/25/deploy-hexo-on-github/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>原创 | 更快更好的使用 Hexo 写个人博客 | Caifx Blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8dcee341a700e92cfe80fd34a8ebc144";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Caifx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">一方天地, 一方世界</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caifx.github.io/2018/08/25/deploy-hexo-on-github/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caifx">
+      <meta itemprop="description" content="以古之道, 以御今只有">
+      <meta itemprop="image" content="https://s1.ax1x.com/2018/08/27/PLN0yD.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Caifx Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">原创 | 更快更好的使用 Hexo 写个人博客
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-25 20:37:39" itemprop="dateCreated datePublished" datetime="2018-08-25T20:37:39+00:00">2018-08-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-27 21:49:05" itemprop="dateModified" datetime="2018-08-27T21:49:05+00:00">2018-08-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>预计阅读时间为：8 分钟</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>欢迎访问 <a href="https://caifx.github.io">Caifx 的个人博客</a>。本文将介绍如何通过 Hexo，Github Page 和 Travis CI 来提升你的写作体验，让你更快更好的使用 Hexo，专注于写作过程</p>
+<a id="more"></a>
+<ul>
+<li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>：快速、简洁且高效的博客框架</li>
+<li><a href="https://pages.github.com/" target="_blank" rel="noopener">Github Page</a>：用来部署你的博客网站，相当于服务器</li>
+<li><a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI</a>：持续化构建工具，相当于有个机器人帮你完成一些固定的操作</li>
+</ul>
+<h2 id="本文环境配置"><a href="#本文环境配置" class="headerlink" title="本文环境配置"></a>本文环境配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">node -v	// v8.11.4</span><br><span class="line">hexo -v // hexo-cli: 1.1.0</span><br><span class="line"></span><br><span class="line">// 操作系统：Debian GNU/Linux 9.5 (stretch)</span><br></pre></td></tr></table></figure>
+<h3 id="Github-配置"><a href="#Github-配置" class="headerlink" title="Github 配置"></a>Github 配置</h3><h4 id="首先创建个人博客仓库"><a href="#首先创建个人博客仓库" class="headerlink" title="首先创建个人博客仓库"></a>首先创建个人博客仓库</h4><p><strong>1. 登录 <a href="https://github.com/" target="_blank" rel="noopener">Github</a></strong></p>
+<p><strong>2. 点击 “+” 号, 选择 “New Repository(新建仓库)”</strong></p>
+<p><strong>3. 仓库名格式必须是: username.github.io</strong></p>
+<p><img src="https://s1.ax1x.com/2018/08/27/PqBb5j.png" alt="PqBb5j.png"></p>
+<h4 id="接着生成-Personal-access-tokens"><a href="#接着生成-Personal-access-tokens" class="headerlink" title="接着生成 Personal access tokens"></a>接着生成 Personal access tokens</h4><p><strong>1. 点击 Settings</strong></p>
+<p><img src="https://s1.ax1x.com/2018/08/27/PqWMo6.png" alt="PqWMo6.png"></p>
+<p><strong>2. Developer settings &gt; Personal access tokens &gt; Generate new token</strong></p>
+<p>除了 delete_repo 没有勾选, 其他都勾选了. 最后一定要记下生成的秘钥, 下次就看不见了</p>
+<p><img src="https://s1.ax1x.com/2018/08/27/PqWKdx.png" alt="PqWKdx.png"></p>
+<h3 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">// 全局安装 Hexo CLI</span><br><span class="line">npm install hexo-cli -g	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 初始化 hexo 项目并命名为 blog</span><br><span class="line">hexo init blog					</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 克隆仓库到本地</span><br><span class="line">git <span class="built_in">clone</span> git@github.com:caifx/caifx.github.io.git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 新建 <span class="built_in">source</span> 分支</span><br><span class="line"><span class="built_in">cd</span> caifx.github.io</span><br><span class="line">git checkout -b <span class="built_in">source</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 把 blog 文件夹内容都复制到 caifx.github.io 文件夹下</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">cp -a blog/. caifx.github.io/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 使用 Next 主题</span><br><span class="line"><span class="built_in">cd</span> caifx.github.io/</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 删除 Next 主题的 .git 文件夹</span><br><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">rm -r .git/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 编辑 caifx.github.io/_config.yml</span><br><span class="line">找到 theme: landscape 更改为 theme: next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 本地测试 hexo</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="Travis-CI-配置"><a href="#Travis-CI-配置" class="headerlink" title="Travis CI 配置"></a>Travis CI 配置</h3><p><strong>1. 登录 <a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis</a></strong></p>
+<p><strong>2. 点击 Add New Repository</strong></p>
+<p><strong>3. 打开 caifx.github.io 仓库的开关并点击 Settings</strong></p>
+<p><img src="https://s1.ax1x.com/2018/08/27/PqWZQJ.png" alt="PqWZQJ.png"></p>
+<p><strong>4. 配置 GH_TOKEN</strong></p>
+<p><img src="https://s1.ax1x.com/2018/08/27/Pqf96H.png" alt="Pqf96H.png"></p>
+<p><strong>5. 配置 caifx.github.io/.travis.yml</strong></p>
+<p>没有这个文件,就新建一个</p>
+<p><code>user.name</code>, <code>user.email</code>, <code>GH_REF</code> 部分要修改成自己的信息</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定语言环境</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定需要sudo权限</span></span><br><span class="line"><span class="attr">sudo:</span> <span class="string">required</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定node_js版本</span></span><br><span class="line"><span class="attr">node_js:</span> <span class="string">stable</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定缓存模块，可加快编译速度。</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line"><span class="attr">  directories:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定博客源码分支</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">source</span></span><br><span class="line"></span><br><span class="line"><span class="attr">before_install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">-g</span> <span class="string">hexo-cli</span></span><br><span class="line"></span><br><span class="line"><span class="attr">install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">config</span> <span class="string">user.name</span> <span class="string">"caifx"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">config</span> <span class="string">user.email</span> <span class="string">"123456789@qq.com"</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行清除缓存，生成网页操作</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">hexo</span> <span class="string">clean</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">hexo</span> <span class="string">generate</span></span><br><span class="line"></span><br><span class="line"><span class="attr">after_success:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">cd</span> <span class="string">./public</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">git</span> <span class="string">init</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">git</span> <span class="string">add</span> <span class="string">.</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">git</span> <span class="string">commit</span> <span class="bullet">-m</span> <span class="string">"Travis CI Auto Builder"</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">git</span> <span class="string">push</span> <span class="bullet">--force</span> <span class="bullet">--quiet</span> <span class="string">"https://$&#123;GH_TOKEN&#125;@$&#123;GH_REF&#125;"</span> <span class="attr">master:master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="attr"> global:</span></span><br><span class="line"><span class="attr">   - GH_REF:</span> <span class="string">github.com/caifx/caifx.github.io.git</span></span><br></pre></td></tr></table></figure>
+<h3 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h3><p>最后，将 source 分支推送到 caifx.github.io 仓库上，Travis CI 就会根据 <code>.travis.yml</code> 的配置自动执行脚本。过几分钟后，前往  <code>https://caifx.github.io/</code>，即可查看到博客内容已经更新了</p>
+<h3 id="更多…"><a href="#更多…" class="headerlink" title="更多…"></a>更多…</h3><ul>
+<li>Hexo 站点的配置和 <a href="https://theme-next.org/" target="_blank" rel="noopener">Next 主题</a> 的配置</li>
+<li>学习 Git 的有关操作</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+            <a href="/tags/Github-Page/" rel="tag"># Github Page</a>
+          
+            <a href="/tags/Travis-CI/" rel="tag"># Travis CI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s1.ax1x.com/2018/08/27/PLN0yD.png" alt="Caifx">
+            
+              <p class="site-author-name" itemprop="name">Caifx</p>
+              <div class="site-description motion-element" itemprop="description">以古之道, 以御今只有</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文环境配置"><span class="nav-number">2.</span> <span class="nav-text">本文环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-配置"><span class="nav-number">2.1.</span> <span class="nav-text">Github 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-配置"><span class="nav-number">2.2.</span> <span class="nav-text">Hexo 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Travis-CI-配置"><span class="nav-number">2.3.</span> <span class="nav-text">Travis CI 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布"><span class="nav-number">2.4.</span> <span class="nav-text">发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多…"><span class="nav-number">2.5.</span> <span class="nav-text">更多…</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caifx</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
